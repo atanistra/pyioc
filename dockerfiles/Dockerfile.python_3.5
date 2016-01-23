@@ -1,0 +1,11 @@
+FROM python:3.5-slim
+
+COPY docker-entrypoint.sh /
+
+VOLUME /src
+
+CMD ["/docker-entrypoint.sh"]
+#ENTRYPOINT ["/docker-entrypoint.sh"]
+
+#CMD ["py.test tests"]
+
