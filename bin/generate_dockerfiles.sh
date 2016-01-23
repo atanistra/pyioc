@@ -24,6 +24,6 @@ done
 
 for VER in ${PYTHON_VERSIONS[@]}
 do
-
+    cd ${SRC_DIR}
     docker run --rm -it -v ${SRC_DIR}:/src mrupgrade/pyioctest${VER}
 done
