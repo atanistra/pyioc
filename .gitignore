@@ -42,3 +42,7 @@ target/
 # PyCharm
 .idea/
 
+# Docker build
+dockerfiles/Dockerfile.py*
+
+test_*.xml

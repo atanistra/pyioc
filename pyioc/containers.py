@@ -152,4 +152,3 @@ class NamespacedContainer(SimpleContainer):
         else:
             provider = self._locator.get(id)
             return provider.get()
-
