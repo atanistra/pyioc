@@ -3,7 +3,7 @@ from __future__ import absolute_import
 
 import pytest
 
-from pyioc.providers import validate_if_callable_without_args, SignatureError, ObjectProvider, NewInstancesProvider, \
+from py3ioc.providers import validate_if_callable_without_args, SignatureError, ObjectProvider, NewInstancesProvider, \
     LazySingleInstanceProvider, LazySingleInstanceWithDepsProvider, NewInstancesWithDepsProvider, \
     EagerSingleInstanceProvider
 from tests.fakes import TestClass1, TEST_CLASS_1_INSTANCE

@@ -1,6 +1,6 @@
 =============================
-Containers (pyioc.containers)
+Containers (py3ioc.containers)
 =============================
 
-.. automodule:: pyioc.containers
+.. automodule:: py3ioc.containers
    :members:

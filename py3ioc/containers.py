@@ -12,9 +12,9 @@ from future.utils import iteritems
 from collections import namedtuple
 from enum import Enum
 
-from pyioc.locators import ObjectLocator, LocatorBase
+from py3ioc.locators import ObjectLocator, LocatorBase
 
-import pyioc.providers as providers
+import py3ioc.providers as providers
 
 InstanceId = namedtuple('InstanceId', ('id', 'namespace'))
 """

@@ -1,6 +1,6 @@
 =========================
-Locators (pyioc.locators)
+Locators (py3ioc.locators)
 =========================
 
-.. automodule:: pyioc.locators
+.. automodule:: py3ioc.locators
    :members:

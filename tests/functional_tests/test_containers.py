@@ -1,7 +1,7 @@
 # coding=utf-8
 
-from pyioc.locators import ObjectLocator
-from pyioc.containers import SimpleContainer, NamespacedContainer, InstanceLifetime
+from py3ioc.locators import ObjectLocator
+from py3ioc.containers import SimpleContainer, NamespacedContainer, InstanceLifetime
 from tests.fakes import TEST_CLASS_1_NAME, TestClass1, TEST_FUNC_1_NAME, TestFunc1, TestClass2, TEST_CLASS_2_NAME
 
 
