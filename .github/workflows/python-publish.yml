@@ -9,8 +9,21 @@
 name: py3ioc
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
+      tags:
+        description: 'Version'
+        required: false
+        type: string
 
 permissions:
   contents: read
