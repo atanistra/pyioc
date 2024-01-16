@@ -1,18 +1,22 @@
 # coding=utf-8
+
 from setuptools import setup
 
 setup(
     name='py3ioc',
     version='1.0.0',
     packages=['py3ioc'],
+    include_package_data=True,
     url='https://github.com/atanistra/pyioc',
     license='MIT',
     author='Jakub (Mr. UPGrade) Czapliński / atanistra',
     author_email='pypi@serwis.atamail.eu',
     description='Python 3 IoC tools.',
+    long_description='''
+        Python 3 IoC tools.
+        https://github.com/atanistra/pyioc/README.MD
+        ''',
     install_requires=[
-        'six>=1.9.0',
-        'future>=0.15.2',
         'enum34>=1.1.1',
     ],
     extras_require={
