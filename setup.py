@@ -2,24 +2,21 @@
 
 from setuptools import setup
 
-this_directory = path.abspath(path.dirname(__file__))
-with open('docs/source/index.rst ', encoding='utf-8') as f:
-    long_description = f.read()
-
 setup(
     name='py3ioc',
     version='1.0.0',
     packages=['py3ioc'],
+    include_package_data=True,
     url='https://github.com/atanistra/pyioc',
     license='MIT',
     author='Jakub (Mr. UPGrade) Czapliński / atanistra',
     author_email='pypi@serwis.atamail.eu',
     description='Python 3 IoC tools.',
-    long_description=long_description,
-    long_description_content_type='text/x-rst',
+    long_description='''
+        Python 3 IoC tools.
+        https://github.com/atanistra/pyioc/README.MD
+        ''',
     install_requires=[
-        'six>=1.9.0',
-        'future>=0.15.2',
         'enum34>=1.1.1',
     ],
     extras_require={
