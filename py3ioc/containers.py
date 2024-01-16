@@ -1,20 +1,19 @@
 # coding=utf-8
-from __future__ import absolute_import
+# from __future__ import absolute_import
 
-from future.standard_library import install_aliases
+# from future.standard_library import install_aliases
 
-install_aliases()
+# install_aliases()
 
 import abc
-import six
 
-from future.utils import iteritems
+# from future.utils import iteritems
 from collections import namedtuple
 from enum import Enum
 
-from pyioc.locators import ObjectLocator, LocatorBase
+from py3ioc.locators import ObjectLocator, LocatorBase
 
-import pyioc.providers as providers
+import py3ioc.providers as providers
 
 InstanceId = namedtuple('InstanceId', ('id', 'namespace'))
 """
@@ -41,8 +40,7 @@ class InstanceLifetime(Enum):
     """
 
 
-@six.add_metaclass(abc.ABCMeta)
-class IdParserBase(object):
+class IdParserBase(abc.ABC):
     @abc.abstractmethod
     def parse(self, key):
         pass
@@ -220,7 +218,7 @@ class NamespacedContainer(SimpleContainer):
         result = {}
         result[self.name] = self.get_keys()
 
-        for name, container in iteritems(self._sub_containers):
+        for name, container in self._sub_containers.items():
             result[name] = container.get_keys()
 
         return result

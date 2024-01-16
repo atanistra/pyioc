@@ -3,11 +3,11 @@
 import pytest
 from mock import Mock
 
-from pyioc.containers import SimpleContainer, NamespacedContainer, NamespaceIdParser, SimpleIdParser, FormatError, \
+from py3ioc.containers import SimpleContainer, NamespacedContainer, NamespaceIdParser, SimpleIdParser, FormatError, \
     InstanceLifetime
-from pyioc.locators import ObjectLocator
+from py3ioc.locators import ObjectLocator
 from tests.fakes import TestClass1, TEST_CLASS_1_NAME, TEST_CLASS_2_NAME, TestClass2
-import pyioc.providers as providers
+import py3ioc.providers as providers
 
 
 class Test_SimpleIdParser(object):

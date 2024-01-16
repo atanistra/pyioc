@@ -1,11 +1,6 @@
 # coding=utf-8
-from __future__ import absolute_import
-from future.standard_library import install_aliases
-
-install_aliases()
 
 import inspect
-import six
 import abc
 
 
@@ -14,14 +9,7 @@ class SignatureError(TypeError):
 
 
 def _check_if_init_implemented(obj):
-    if six.PY2:
-        if inspect.ismethod(obj.__init__):
-            return True
-    if six.PY3:
-        if inspect.isfunction(obj.__init__):
-            return True
-
-    return False
+    return bool(inspect.isfunction(obj.__init__))
 
 
 def validate_if_callable_without_args(obj):
@@ -46,8 +34,7 @@ def validate_if_callable_without_args(obj):
             raise SignatureError('callable cant have arguments')
 
 
-@six.add_metaclass(abc.ABCMeta)
-class ProviderBase(object):
+class ProviderBase(abc.ABC):
     @abc.abstractmethod
     def get_instance(self, context=None):
         pass

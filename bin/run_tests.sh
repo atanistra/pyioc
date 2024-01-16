@@ -8,7 +8,7 @@ SRC_DIR="$(dirname ${FILE_DIR})"
 
 if [ -z "${PY_VER}" ]
 then
-    PY_VER=2.7
+    PY_VER=3
 fi
 
 python${PY_VER} -m pytest tests/

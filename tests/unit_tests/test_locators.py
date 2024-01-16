@@ -2,7 +2,7 @@
 
 import pytest
 
-from pyioc.locators import ObjectLocator, KeyToStringConverter
+from py3ioc.locators import ObjectLocator, KeyToStringConverter
 from tests.fakes import TEST_CLASS_1_NAME, TestClass1
 
 

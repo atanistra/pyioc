@@ -42,3 +42,4 @@ target/
 # PyCharm
 .idea/
 docker/pyioc_test/*.txt
+docker/py3ioc_test/*.txt
