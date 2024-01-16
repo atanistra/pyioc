@@ -2,14 +2,14 @@
 from setuptools import setup
 
 setup(
-    name='pyioc',
-    version='0.3.0',
-    packages=['pyioc'],
-    url='https://github.com/MrUPGrade/pyioc',
+    name='py3ioc',
+    version='1.0.0',
+    packages=['py3ioc'],
+    url='https://github.com/atanistra/pyioc',
     license='MIT',
-    author='Jakub (Mr. UPGrade) Czapliński',
-    author_email='itsupgradetime@gmail.com',
-    description='Python IoC tools.',
+    author='Jakub (Mr. UPGrade) Czapliński / atanistra',
+    author_email='pypi@serwis.atamail.eu',
+    description='Python 3 IoC tools.',
     install_requires=[
         'six>=1.9.0',
         'future>=0.15.2',
@@ -30,7 +30,6 @@ setup(
         ]
     },
     classifiers=[
-        "Programming Language :: Python :: 2.6",
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 3.3",
         "Programming Language :: Python :: 3.4",
