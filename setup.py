@@ -1,5 +1,11 @@
 # coding=utf-8
 from setuptools import setup
+from os import path
+from setuptools import setup
+
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'docs/source/index.rst '), encoding='utf-8') as f:
+    long_description = f.read()
 
 setup(
     name='py3ioc',
@@ -10,6 +16,8 @@ setup(
     author='Jakub (Mr. UPGrade) Czapliński / atanistra',
     author_email='pypi@serwis.atamail.eu',
     description='Python 3 IoC tools.',
+    long_description=long_description,
+    long_description_content_type='text/x-rst',
     install_requires=[
         'six>=1.9.0',
         'future>=0.15.2',
