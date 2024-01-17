@@ -1,18 +1,22 @@
 # coding=utf-8
+from __future__ import annotations
 
 import inspect
 import abc
+import typing
+
+import py3ioc.containers as c
 
 
 class SignatureError(TypeError):
     pass
 
 
-def _check_if_init_implemented(obj):
+def _check_if_init_implemented(obj: typing.Any):
     return bool(inspect.isfunction(obj.__init__))
 
 
-def validate_if_callable_without_args(obj):
+def validate_if_callable_without_args(obj: typing.Callable) -> None:
     if not callable(obj):
         raise TypeError('Object have to be callable')
 
@@ -36,65 +40,66 @@ def validate_if_callable_without_args(obj):
 
 class ProviderBase(abc.ABC):
     @abc.abstractmethod
-    def get_instance(self, context=None):
+    def get_instance(self, context: None = None):
         pass
 
 
 class ObjectProvider(ProviderBase):
-    def __init__(self, obj):
+    def __init__(self, obj: object):
         self._obj = obj
 
-    def get_instance(self, context=None):
+    def get_instance(self, context: None = None) -> object:
         return self._obj
 
 
 class NewInstancesProvider(ProviderBase):
-    def __init__(self, callable_object):
+    def __init__(self, callable_object: typing.Callable) -> None:
         validate_if_callable_without_args(callable_object)
         self._callable_object = callable_object
 
-    def get_instance(self, context=None):
+    def get_instance(self, context: None = None) -> object:
         return self._callable_object()
 
 
 class LazySingleInstanceProvider(ProviderBase):
-    def __init__(self, callable_object):
+    def __init__(self, callable_object: typing.Callable):
         validate_if_callable_without_args(callable_object)
         self._instance = None
         self._callable_object = callable_object
 
-    def get_instance(self, context=None):
+    def get_instance(self, context: None = None) -> object:
         if not self._instance:
             self._instance = self._callable_object()
         return self._instance
 
 
 class EagerSingleInstanceProvider(ProviderBase):
-    def __init__(self, callable_object):
+    def __init__(self, callable_object: typing.Callable):
         validate_if_callable_without_args(callable_object)
         self._instance = callable_object()
 
-    def get_instance(self, context=None):
+    def get_instance(self, context: None = None) -> object:
         return self._instance
 
 
 class NewInstancesWithDepsProvider(ProviderBase):
-    def __init__(self, callable_object, container):
+    def __init__(self, callable_object: typing.Callable,
+                 container: typing.Any[c.NamespacedContainer, c.SimpleContainer]) -> None:
         if not callable(callable_object):
             raise TypeError('Argument "callable_object" must be a callable')
 
         self._callable_object = callable_object
         self._container = container
 
-    def get_instance(self, context=None):
+    def get_instance(self, context: typing.Optional[dict] = None) -> object:
         return self._build_object(context)
 
-    def _build_object(self, context):
+    def _build_object(self, context: typing.Optional[dict] = None) -> object:
         if inspect.isclass(self._callable_object):
             if _check_if_init_implemented(self._callable_object):
                 args = inspect.getfullargspec(self._callable_object.__init__).args
             else:
-                args = ()
+                args = []
         else:
             args = inspect.getfullargspec(self._callable_object).args
 
@@ -112,11 +117,12 @@ class NewInstancesWithDepsProvider(ProviderBase):
 
 
 class LazySingleInstanceWithDepsProvider(NewInstancesWithDepsProvider):
-    def __init__(self, callable_object, container):
+    def __init__(self, callable_object: typing.Callable,
+                 container: typing.Any[c.NamespacedContainer, c.SimpleContainer]) -> None:
         super(LazySingleInstanceWithDepsProvider, self).__init__(callable_object, container)
-        self._instance = None
+        self._instance: object = None
 
-    def get_instance(self, context=None):
+    def get_instance(self, context: typing.Optional[dict] = None) -> object:
         if not self._instance:
             self._instance = self._build_object(context)
         return self._instance

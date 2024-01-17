@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='py3ioc',
-    version='1.0.0',
+    version='1.0.1',
     packages=['py3ioc'],
     include_package_data=True,
     url='https://github.com/atanistra/pyioc',
@@ -14,10 +14,10 @@ setup(
     description='Python 3 IoC tools.',
     long_description='''
         Python 3 IoC tools.
-        https://github.com/atanistra/pyioc/README.MD
+        https://github.com/atanistra/pyioc
         ''',
     install_requires=[
-        'enum34>=1.1.1',
+        'mypy>=1.8',
     ],
     extras_require={
         'test': [

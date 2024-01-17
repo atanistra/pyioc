@@ -7,8 +7,9 @@ import inspect
 import abc
 
 
-class KeyToStringConverter(object):
-    def generate_key(self, obj):
+class KeyToStringConverter:
+    @staticmethod
+    def generate_key(obj: object) -> str:
         if inspect.isclass(obj):
             return obj.__name__
         elif inspect.isfunction(obj):
@@ -18,7 +19,7 @@ class KeyToStringConverter(object):
 
 
 class UnregisteredKeyError(KeyError):
-    def __init__(self, key):
+    def __init__(self, key: str):
         self._key = key
 
     def __str__(self):
@@ -29,7 +30,7 @@ class UnregisteredKeyError(KeyError):
 
 
 class KeyAlreadyRegisteredError(KeyError):
-    def __init__(self, key):
+    def __init__(self, key: str):
         self._key = key
 
     def __str__(self):
@@ -46,18 +47,21 @@ class LocatorBase(abc.ABC):
     """
 
     @abc.abstractmethod
-    def register(self, key, obj):
+    def register(self, key: str, obj: object):
         pass
 
     @abc.abstractmethod
-    def locate(self, key):
+    def locate(self, key: str):
         pass
 
     @abc.abstractmethod
-    def get_or_default(self, key, default):
+    def get_or_default(self, key: str, default: object):
         pass
 
-    def is_key_registered(self, key):
+    def is_key_registered(self, key: str):
+        pass
+
+    def get_keys(self):
         pass
 
 
@@ -69,7 +73,7 @@ class ObjectLocator(LocatorBase):
     def __init__(self):
         self._objects = {}
 
-    def register(self, key, obj):
+    def register(self, key: str, obj: object) -> None:
         """
          Register object in locator under a specified key.
 
@@ -81,7 +85,7 @@ class ObjectLocator(LocatorBase):
 
         self._set_instance(key, obj)
 
-    def locate(self, key):
+    def locate(self, key: str) -> object:
         """
         Returns the object registered for a given key.
 
@@ -95,7 +99,7 @@ class ObjectLocator(LocatorBase):
 
         return instance
 
-    def get_or_default(self, key, default):
+    def get_or_default(self, key: str, default: object) -> object:
         """
         Gets the object for a given key. If the key is not present in the locator, returns value of *default* parameter.
 
@@ -110,7 +114,7 @@ class ObjectLocator(LocatorBase):
 
         return instance
 
-    def is_key_registered(self, key):
+    def is_key_registered(self, key: str) -> bool:
         """
         Checks if there is object registered for a given key in the locator.
 
@@ -123,11 +127,11 @@ class ObjectLocator(LocatorBase):
             return False
         return True
 
-    def get_keys(self):
+    def get_keys(self) -> list[str]:
         return list(self._objects.keys())
 
-    def _get_instance(self, key):
+    def _get_instance(self, key: str) -> object:
         return self._objects[key]
 
-    def _set_instance(self, key, value):
+    def _set_instance(self, key: str, value: object) -> None:
         self._objects[key] = value
