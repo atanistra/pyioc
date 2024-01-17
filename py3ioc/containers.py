@@ -1,18 +1,12 @@
 # coding=utf-8
-# from __future__ import absolute_import
-
-# from future.standard_library import install_aliases
-
-# install_aliases()
-
+from __future__ import annotations
 import abc
+import typing
 
-# from future.utils import iteritems
 from collections import namedtuple
 from enum import Enum
 
 from py3ioc.locators import ObjectLocator, LocatorBase
-
 import py3ioc.providers as providers
 
 InstanceId = namedtuple('InstanceId', ('id', 'namespace'))
@@ -55,7 +49,7 @@ class NamespaceIdParser(IdParserBase):
     def __init__(self, separator='__'):
         self._separator = separator
 
-    def parse(self, key):
+    def parse(self, key: str):
         if not isinstance(key, str):
             raise TypeError('Key argument must be string')
 
@@ -71,12 +65,12 @@ class NamespaceIdParser(IdParserBase):
             raise FormatError('Wrong key format. Expected namespace%sclass' % self._separator)
 
 
-class SimpleContainer(object):
+class SimpleContainer:
     """
     a
     """
 
-    def __init__(self, name='', locator=None):
+    def __init__(self, name: str = '', locator: object = None) -> None:
         """
         Raises TypeError when locator object is not derived from LocatorBase class.
 
@@ -91,7 +85,7 @@ class SimpleContainer(object):
             self._locator = ObjectLocator()
         self._name = name
 
-    def register_object(self, key, obj):
+    def register_object(self, key: str, obj: object) -> None:
         """
         Registers object for a given key.
 
@@ -101,7 +95,8 @@ class SimpleContainer(object):
         provider = providers.ObjectProvider(obj)
         self._register_provider_for_key(key, provider)
 
-    def register_callable(self, key, callable_object, lifetime=InstanceLifetime.NewInstancePerCall):
+    def register_callable(self, key: str, callable_object: typing.Callable,
+                          lifetime: InstanceLifetime = InstanceLifetime.NewInstancePerCall) -> None:
         """
         Registers a callable object that will be used to create a new instance of an object that will be returned upon
         calling the get_instance() method.
@@ -114,6 +109,7 @@ class SimpleContainer(object):
         :param lifetime: Specified lifetime of an object that is produced by callable.
         :return:
         """
+        provider: typing.Any[providers.LazySingleInstanceProvider, providers.NewInstancesProvider]
         if lifetime == InstanceLifetime.NewInstancePerCall:
             provider = providers.NewInstancesProvider(callable_object)
         elif lifetime == InstanceLifetime.Singleton:
@@ -123,7 +119,8 @@ class SimpleContainer(object):
 
         self._register_provider_for_key(key, provider)
 
-    def register_callable_with_deps(self, key, callable_object, lifetime=InstanceLifetime.NewInstancePerCall):
+    def register_callable_with_deps(self, key: str, callable_object: typing.Callable,
+                                    lifetime: InstanceLifetime = InstanceLifetime.NewInstancePerCall) -> None:
         if lifetime == InstanceLifetime.NewInstancePerCall:
             provider = providers.NewInstancesWithDepsProvider(callable_object, self)
         elif lifetime == InstanceLifetime.Singleton:
@@ -133,7 +130,7 @@ class SimpleContainer(object):
 
         self._register_provider_for_key(key, provider)
 
-    def resolve(self, key, context=None):
+    def resolve(self, key: str, context: typing.Optional[dict] = None) -> object:
         """
         Return instance based on what was registered for a given key.
 
@@ -142,7 +139,7 @@ class SimpleContainer(object):
         """
         return self._resolve(key, context)
 
-    def build(self, cls, context=None):
+    def build(self, cls: typing.Callable, context: typing.Optional[dict] = None) -> object:
         """
         Build a new instance of class cls injecting dependencies of an object from objects registered in the container.
 
@@ -153,7 +150,7 @@ class SimpleContainer(object):
         return provider.get_instance(context)
 
     @property
-    def name(self):
+    def name(self) -> str:
         """
         The name of the container.
 
@@ -161,7 +158,7 @@ class SimpleContainer(object):
         """
         return self._name
 
-    def get_keys(self):
+    def get_keys(self) -> list[str]:
         """
         Get all keys registered in that container.
 
@@ -169,7 +166,7 @@ class SimpleContainer(object):
         """
         return self._locator.get_keys()
 
-    def _resolve(self, key, context=None):
+    def _resolve(self, key, context: typing.Optional[dict] = None) -> object:
         if context:
             try:
                 item = context[key]
@@ -181,22 +178,22 @@ class SimpleContainer(object):
         instance_provider = self._locator.locate(key)
         return instance_provider.get_instance(context)
 
-    def _register_provider_for_key(self, id, provider):
+    def _register_provider_for_key(self, id: str, provider: object) -> None:
         self._locator.register(id, provider)
 
 
 class NamespacedContainer(SimpleContainer):
-    def __init__(self, name='', locator=None, name_resolver=None):
+    def __init__(self, name: str = '', locator: typing.Optional[object] = None, name_resolver=None):
         super(NamespacedContainer, self).__init__(name=name, locator=locator)
         self._sub_containers = {}
         self._name_resolver = name_resolver or NamespaceIdParser()
 
         self._sub_containers[self.name] = self
 
-    def add_sub_container(self, container):
+    def add_sub_container(self, container: 'NamespacedContainer') -> None:
         try:
             name = container.name
-        except:
+        except AttributeError:
             raise TypeError('Locator must be of type: "%s"  or its subclass' % SimpleContainer.__class__.__name__)
 
         if name in self._sub_containers.keys():
@@ -204,10 +201,10 @@ class NamespacedContainer(SimpleContainer):
 
         self._sub_containers[container.name] = container
 
-    def get_sub_container(self, name):
+    def get_sub_container(self, name: str):
         return self._sub_containers[name]
 
-    def get_all_keys(self):
+    def get_all_keys(self) -> dict[str, list[str]]:
         """
         Get all keys from container and all sub containers.
         This container keys will be stored under '' key in dictionary.
@@ -215,15 +212,14 @@ class NamespacedContainer(SimpleContainer):
 
         :return: Dictionary of keys registered in container and all sub containers.
         """
-        result = {}
-        result[self.name] = self.get_keys()
+
+        result = {self.name: self.get_keys()}
 
         for name, container in self._sub_containers.items():
             result[name] = container.get_keys()
-
         return result
 
-    def _resolve(self, id, context=None):
+    def _resolve(self, id: typing.Any[str, typing.Callable], context: typing.Optional[dict] = None) -> object:
         if isinstance(id, str):
             instance_id = self._name_resolver.parse(id)
 
