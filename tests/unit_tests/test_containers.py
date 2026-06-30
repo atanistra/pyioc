@@ -170,6 +170,15 @@ class Test_SimpleContainer(object):
         assert TEST_CLASS_1_NAME in registered_keys
         assert len(registered_keys) == 1
 
+    def test_if_resolve_falls_back_to_locator_when_key_missing_in_context(self):
+        container_class = self.container()
+        container = container_class()
+        container.register_callable(TEST_CLASS_1_NAME, TestClass1)
+
+        instance = container.resolve(TEST_CLASS_1_NAME, context={'other_key': 'value'})
+
+        assert isinstance(instance, TestClass1)
+
 
 class Test_NamespaceContainer(Test_SimpleContainer):
     @classmethod

@@ -25,9 +25,6 @@ class UnregisteredKeyError(KeyError):
     def __str__(self):
         return 'There is no object registered for the given "%s" key' % self._key
 
-    def __unicode__(self):
-        return self.__str__()
-
 
 class KeyAlreadyRegisteredError(KeyError):
     def __init__(self, key: str):
@@ -35,9 +32,6 @@ class KeyAlreadyRegisteredError(KeyError):
 
     def __str__(self):
         return 'There is already an object registered for the "%s" key' % self._key
-
-    def __unicode__(self):
-        return self.__str__()
 
 
 # @six.add_metaclass(abc.ABCMeta)

@@ -2,7 +2,12 @@
 
 import pytest
 
-from py3ioc.locators import ObjectLocator, KeyToStringConverter
+from py3ioc.locators import (
+    ObjectLocator,
+    KeyToStringConverter,
+    UnregisteredKeyError,
+    KeyAlreadyRegisteredError,
+)
 from tests.fakes import TEST_CLASS_1_NAME, TestClass1
 
 
@@ -78,6 +83,18 @@ class Test_ObjectLocator(object):
 
         assert 'key' in keys
         assert len(keys) == 1
+
+
+class Test_LocatorErrors(object):
+    def test_unregistered_key_error_message_contains_key(self):
+        error = UnregisteredKeyError(TEST_CLASS_1_NAME)
+
+        assert TEST_CLASS_1_NAME in str(error)
+
+    def test_already_registered_error_message_contains_key(self):
+        error = KeyAlreadyRegisteredError(TEST_CLASS_1_NAME)
+
+        assert TEST_CLASS_1_NAME in str(error)
 
 
 class Test_KeyToStringConverter(object):
