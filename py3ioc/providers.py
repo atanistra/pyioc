@@ -68,7 +68,7 @@ class LazySingleInstanceProvider(ProviderBase):
         self._callable_object = callable_object
 
     def get_instance(self, context: None = None) -> object:
-        if not self._instance:
+        if self._instance is None:
             self._instance = self._callable_object()
         return self._instance
 
@@ -84,7 +84,7 @@ class EagerSingleInstanceProvider(ProviderBase):
 
 class NewInstancesWithDepsProvider(ProviderBase):
     def __init__(self, callable_object: typing.Callable,
-                 container: typing.Any[c.NamespacedContainer, c.SimpleContainer]) -> None:
+                 container: typing.Union[c.NamespacedContainer, c.SimpleContainer]) -> None:
         if not callable(callable_object):
             raise TypeError('Argument "callable_object" must be a callable')
 
@@ -118,11 +118,11 @@ class NewInstancesWithDepsProvider(ProviderBase):
 
 class LazySingleInstanceWithDepsProvider(NewInstancesWithDepsProvider):
     def __init__(self, callable_object: typing.Callable,
-                 container: typing.Any[c.NamespacedContainer, c.SimpleContainer]) -> None:
+                 container: typing.Union[c.NamespacedContainer, c.SimpleContainer]) -> None:
         super(LazySingleInstanceWithDepsProvider, self).__init__(callable_object, container)
         self._instance: object = None
 
     def get_instance(self, context: typing.Optional[dict] = None) -> object:
-        if not self._instance:
+        if self._instance is None:
             self._instance = self._build_object(context)
         return self._instance
