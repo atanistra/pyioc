@@ -16,9 +16,7 @@ setup(
         Python 3 IoC tools.
         https://github.com/atanistra/pyioc
         ''',
-    install_requires=[
-        'mypy>=1.8',
-    ],
+    install_requires=[],
     extras_require={
         'test': [
             'pytest>=2.8.0',
@@ -27,7 +25,8 @@ setup(
         ],
         'dev': [
             'ipython',
-            'flake8'
+            'flake8',
+            'mypy>=1.8'
         ],
         'doc': [
             'sphinx'

@@ -109,7 +109,7 @@ class SimpleContainer:
         :param lifetime: Specified lifetime of an object that is produced by callable.
         :return:
         """
-        provider: typing.Any[providers.LazySingleInstanceProvider, providers.NewInstancesProvider]
+        provider: typing.Union[providers.LazySingleInstanceProvider, providers.NewInstancesProvider]
         if lifetime == InstanceLifetime.NewInstancePerCall:
             provider = providers.NewInstancesProvider(callable_object)
         elif lifetime == InstanceLifetime.Singleton:
@@ -219,7 +219,7 @@ class NamespacedContainer(SimpleContainer):
             result[name] = container.get_keys()
         return result
 
-    def _resolve(self, id: typing.Any[str, typing.Callable], context: typing.Optional[dict] = None) -> object:
+    def _resolve(self, id: typing.Union[str, typing.Callable], context: typing.Optional[dict] = None) -> object:
         if isinstance(id, str):
             instance_id = self._name_resolver.parse(id)
 
