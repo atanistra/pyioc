@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='py3ioc',
-    version='1.0.2',
+    version='1.0.3',
     packages=['py3ioc'],
     include_package_data=True,
     url='https://github.com/atanistra/pyioc',
