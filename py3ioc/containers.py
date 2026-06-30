@@ -213,11 +213,7 @@ class NamespacedContainer(SimpleContainer):
         :return: Dictionary of keys registered in container and all sub containers.
         """
 
-        result = {self.name: self.get_keys()}
-
-        for name, container in self._sub_containers.items():
-            result[name] = container.get_keys()
-        return result
+        return {name: container.get_keys() for name, container in self._sub_containers.items()}
 
     def _resolve(self, id: typing.Union[str, typing.Callable], context: typing.Optional[dict] = None) -> object:
         if isinstance(id, str):
