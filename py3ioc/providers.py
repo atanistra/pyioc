@@ -7,6 +7,8 @@ import typing
 
 import py3ioc.containers as c
 
+_MISSING = object()
+
 
 class SignatureError(TypeError):
     pass
@@ -64,11 +66,11 @@ class NewInstancesProvider(ProviderBase):
 class LazySingleInstanceProvider(ProviderBase):
     def __init__(self, callable_object: typing.Callable):
         validate_if_callable_without_args(callable_object)
-        self._instance = None
+        self._instance = _MISSING
         self._callable_object = callable_object
 
     def get_instance(self, context: None = None) -> object:
-        if self._instance is None:
+        if self._instance is _MISSING:
             self._instance = self._callable_object()
         return self._instance
 
@@ -120,9 +122,9 @@ class LazySingleInstanceWithDepsProvider(NewInstancesWithDepsProvider):
     def __init__(self, callable_object: typing.Callable,
                  container: typing.Union[c.NamespacedContainer, c.SimpleContainer]) -> None:
         super(LazySingleInstanceWithDepsProvider, self).__init__(callable_object, container)
-        self._instance: object = None
+        self._instance: object = _MISSING
 
     def get_instance(self, context: typing.Optional[dict] = None) -> object:
-        if self._instance is None:
+        if self._instance is _MISSING:
             self._instance = self._build_object(context)
         return self._instance

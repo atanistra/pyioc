@@ -52,9 +52,11 @@ class LocatorBase(abc.ABC):
     def get_or_default(self, key: str, default: object):
         pass
 
+    @abc.abstractmethod
     def is_key_registered(self, key: str):
         pass
 
+    @abc.abstractmethod
     def get_keys(self):
         pass
 

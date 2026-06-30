@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='py3ioc',
-    version='1.0.2',
+    version='1.0.3',
     packages=['py3ioc'],
     include_package_data=True,
     url='https://github.com/atanistra/pyioc',
@@ -43,5 +43,8 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
+        "Programming Language :: Python :: 3.13",
     ]
 )

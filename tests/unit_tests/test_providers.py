@@ -137,6 +137,14 @@ class Test_LazySingletonProvider(object):
         with pytest.raises(TypeError):
             LazySingleInstanceProvider(1)
 
+    def test_if_provider_returns_none_as_singleton(self):
+        provider = LazySingleInstanceProvider(lambda: None)
+        ret1 = provider.get_instance()
+        ret2 = provider.get_instance()
+
+        assert ret1 is None
+        assert ret2 is None
+
 
 class Test_EagerSingleInstanceProvider(object):
     def test_if_single_instance_provider_returns_instance(self):
@@ -240,3 +248,11 @@ class Test_LazySingleInstanceWithDepsProvider(object):
     def test_if_provider_raise_error_when_initialized_with_not_callable(self, mock_container):
         with pytest.raises(TypeError):
             LazySingleInstanceWithDepsProvider(1, mock_container)
+
+    def test_if_provider_returns_none_as_singleton(self, mock_container):
+        provider = LazySingleInstanceWithDepsProvider(lambda: None, mock_container)
+        ret1 = provider.get_instance()
+        ret2 = provider.get_instance()
+
+        assert ret1 is None
+        assert ret2 is None
